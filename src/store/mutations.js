@@ -7,6 +7,7 @@ export const mutations={
         state.userInfo=info;
         // 由于状态层刷新数据就没有了，但是我们希望数据还在，所以在本地中也存一份
         // 如果info是一个{}，那么代表要退出，删；如果不是一个空{}，代表是登陆，存
+        
         if(info.id){
             sessionStorage.setItem("userInfo",JSON.stringify(info))
         }else{

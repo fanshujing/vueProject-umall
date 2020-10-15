@@ -9,6 +9,7 @@ import manage from "./moudules/manages"
 import cate from "./moudules/cate"
 import space from "./moudules/space"
 import goods from "./moudules/goods"
+import banner from "./moudules/banner"
 export default new Vuex.Store({
     state,
     mutations,
@@ -21,5 +22,6 @@ export default new Vuex.Store({
         cate,
         space,
         goods,
+        banner,
     }
 })

@@ -33,16 +33,22 @@ export default {
     ...mapGetters({}),
   },
   methods: {
-    ...mapActions({}),
+    ...mapActions({
+      changeUserInfoAction:"changeUserInfoAction"
+    }),
     //登录
     login() {
-      // this.$router.push("/")
       reqManageLogin(this.form).then((res)=>{
-        if(res.data.msg==200){
+        if(res.data.code==200){
           //登录成功
+          
           successAlert('登录成功')
           // res.data.list 用户信息存起来，供更多组件使用
+          this.changeUserInfoAction(res.data.list)
+          this.$router.push("/")
           
+        }else{
+          warningAlert(res.data.msg)
         }
       })
     },

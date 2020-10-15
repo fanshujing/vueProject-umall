@@ -1,14 +1,47 @@
 import axios from "axios"
 import qs from "qs"
 import Vue from "vue"
+import store from "../store"
+import {warningAlert} from "./alert"
+import router from "../router"
+
+// 开发环境下使用
 Vue.prototype.$imgPre="http://localhost:3000"
 let baseUrl = "/api";
 
+// 打包
+// Vue.prototype.$imgPre=""
+// let baseUrl = "";
+
+
+
+// 请求拦截，后台app.js后端登录拦截打开
+axios.interceptors.request.use(req=>{
+    console.log("---请求拦截----");
+    console.log(req);
+    if(req.url!=baseUrl+"/api/userlogin"){
+        console.log(store.state);
+        req.headers.authorization=store.state.userInfo.token;
+    }
+    return req;
+})
+
+// 响应拦截
 axios.interceptors.response.use(res => {
     console.group("=====本次请求路径是:" + res.config.url)
     console.log(res);
     console.groupEnd()
 
+    // 测试
+    // if(res.config.url==baseUrl+"/api/menulist"){
+    //     res.data.msg="登录已过期或访问权限受限"
+    // }
+
+    //用户掉线了
+    if(res.data.msg=='登录已过期或访问权限受限'){
+        warningAlert(res.data.msg)
+        router.push("/login")
+    }
     return res;
 })
 
@@ -321,5 +354,58 @@ export const reqGoodsDel = (id) => {
         data: {
             id:id
         }
+    })
+}
+// ***************轮播管理************
+// 添加title,img文件，status
+export const reqBannerAdd = (form) => {
+    let data=new FormData;
+    for(let i in form){
+        data.append(i,form[i])
+    }
+    return axios({
+        url: baseUrl + "/api/banneradd",
+        method: "post",
+        data: data
+    })
+}
+// 请求列表
+export const reqBannerList = () => {
+    return axios({
+        url: baseUrl + "/api/bannerlist",
+    })
+}
+// 获取一条角色数据
+export const reqBannerInfo = (id) => {
+    return axios({
+        url: baseUrl + "/api/bannerinfo",
+        method: "get",
+        params: {
+            id: id
+        }
+    })
+}
+// 删除
+export const reqBannerDel = (id) => {
+    console.log(id);
+    return axios({
+        url: baseUrl + "/api/bannerdelete",
+        method: "post",
+        data: {
+            id: id
+        }
+    })
+}
+
+// 修改
+export const reqBannerUpdate = (form) => {
+    let data=new FormData;
+    for(let i in form){
+        data.append(i,form[i])
+    }
+    return axios({
+        url: baseUrl + "/api/banneredit",
+        method: "post",
+        data: data
     })
 }
