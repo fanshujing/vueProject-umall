@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="info.isAdd ? '添加角色' : '编辑角色'"
+      :title="info.isAdd ? '添加商品规格' : '编辑商品规格'"
       :visible.sync="info.isshow"
       @closed="close"
     >

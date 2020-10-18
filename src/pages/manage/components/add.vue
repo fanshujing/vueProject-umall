@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="info.isAdd ? '添加角色' : '编辑角色'"
+      :title="info.isAdd ? '添加管理员' : '编辑管理员'"
       :visible.sync="info.isshow"
       @closed="close"
     >
@@ -95,9 +95,27 @@ export default {
         status: 1,
       };
     },
+    examine(){
+      if(this.form.roleid==""){
+        warningAlert("所属角色不能为空")
+        return false
+      }
+      if(this.form.username==""){
+        warningAlert("用户名不能为空")
+        return false
+      }
+      if(this.form.password==""){
+        warningAlert("密码不能为空")
+        return false
+      }
+      return true;
+    },
 
     //点击了添加按钮
     add() {
+      if(this.examine()==false){
+        return
+      }
       reqManageAdd(this.form).then((res) => {
         if (res.data.code == 200) {
           //成功
@@ -134,6 +152,9 @@ export default {
     },
     //修改
     update() {
+      if(this.examine()==false){
+        return
+      }
       reqManageUpdate(this.form).then((res) => {
         if (res.data.code == 200) {
           successAlert(res.data.msg);

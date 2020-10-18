@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="info.isAdd ? '添加角色' : '编辑角色'"
+      :title="info.isAdd ? '添加轮播图' : '编辑轮播图'"
       :visible.sync="info.isshow"
       @closed="close"
       @opened="opened"
@@ -132,8 +132,22 @@ export default {
       //图片地址
       this.imgUrl = "";
     },
+    examine(){
+      if(this.form.title==""){
+        warningAlert("标题不能为空")
+        return false
+      }
+      if(this.form.img==""||this.form.img==null){
+        warningAlert("图片不能为空")
+        return false
+      }
+      return true;
+    },
     //点击了添加按钮
     add() {
+      if(!this.examine()){
+        return
+      }
       reqBannerAdd(this.form).then((res) => {
         if (res.data.code == 200) {
           //成功
@@ -146,7 +160,7 @@ export default {
           this.cancel();
 
           //list数据要刷新
-          this.requestGoodsList();
+          this.reqBannerList();
         } else {
           warningAlert(res.data.msg);
         }
@@ -174,7 +188,9 @@ export default {
     },
     //修改
     update() {
-      
+      if(!this.examine()){
+        return
+      }
       reqBannerUpdate(this.form).then((res) => {
         if (res.data.code == 200) {
           successAlert(res.data.msg);

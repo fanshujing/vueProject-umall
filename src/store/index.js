@@ -10,6 +10,8 @@ import cate from "./moudules/cate"
 import space from "./moudules/space"
 import goods from "./moudules/goods"
 import banner from "./moudules/banner"
+import member from "./moudules/member"
+import seck from "./moudules/seck"
 export default new Vuex.Store({
     state,
     mutations,
@@ -23,5 +25,7 @@ export default new Vuex.Store({
         space,
         goods,
         banner,
+        member,
+        seck,
     }
 })

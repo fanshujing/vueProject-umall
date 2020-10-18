@@ -37,13 +37,13 @@ export default {
     // 点击了添加按钮
     willAdd(){
       this.info.isshow=true;
+      this.info.isAdd=true;
     },
     //编辑
     edit(id){
       this.info.isshow=true;
        this.info.isAdd=false;
       //让add组件发起获取详情的请求
-      console.log(2);
       this.$refs.add.look(id)
     } 
   },

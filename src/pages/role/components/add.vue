@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="info.isAdd ? '添加角色' : '编辑管理'"
+    :title="info.isAdd ? '添加角色' : '编辑角色'"
     :visible.sync="info.isshow"
     @closed="close"
   >
@@ -87,7 +87,22 @@ export default {
       //树形控件设置值
       this.$refs.tree.setCheckedKeys([]);
     },
+    examine(){
+      if(this.form.rolename==""){
+        warningAlert("角色名称不能为空")
+
+        return false
+      }
+      if(this.$refs.tree.getCheckedKeys()==""){
+        warningAlert("权限不能为空")
+        return false
+      }
+      return true;
+    },
     add() {
+      if(this.examine()==false){
+        return
+      }
       //树形控件取值 this.$refs.tree.getCheckedKeys()
       this.form.menus = JSON.stringify(this.$refs.tree.getCheckedKeys());
       reqRoleAdd(this.form).then((res) => {
@@ -119,6 +134,9 @@ export default {
     },
     // 修改
     update(){
+      if(this.examine()==false){
+        return
+      }
       this.form.menus=JSON.stringify(this.$refs.tree.getCheckedKeys())
       reqRoleUpdate(this.form).then((res)=>{
         if (res.data.code == 200) {

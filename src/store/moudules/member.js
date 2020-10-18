@@ -1,4 +1,4 @@
-import {reqCateList} from "../../utils/request"
+import {reqMemberList} from "../../utils/request"
 const state={
     list:[],
 }
@@ -9,13 +9,9 @@ const mutations={
 }
 const actions = {
     //页面请求
-    requestCateList(context,obj){
-        if(!obj){
-            obj={istree:true}
-        }else{
-            obj=""
-        }
-        reqCateList(obj).then(res=>{
+    requestMemberList(context){
+        
+        reqMemberList().then(res=>{
             let list=res.data.list?res.data.list:[];
             context.commit("changeList",list);
         })

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="info.isAdd ? '添加角色' : '编辑角色'"
+      :title="info.isAdd ? '添加商品' : '编辑商品'"
       :visible.sync="info.isshow"
       @closed="close"
       @opened="opened"
@@ -170,7 +170,7 @@ export default {
 
 
     ...mapActions({
-      //请求商品分类list
+      //商品规格list
       reqCateList: "cate/requestCateList",
       //商品规格list
       reqSpecsList: "space/requestSpaceList",
@@ -268,23 +268,52 @@ export default {
       this.goodsAttrList = [];
     },
     // 检验数据是否合格
-    // checkedData() {
-    //   //验证规格名称
-    //   if (this.form.specsname == "") {
-    //     warningAlert("规格名称不能为空");
-    //     return false;
-    //   }
+    checkedData() {
+      if (this.form.first_cateid == "") {
+        warningAlert("一级分类不能为空");
+        return false;
+      }
+      if (this.form.second_cateid == "") {
+        warningAlert("二级分类不能为空");
+        return false;
+      }
+      if (this.form.goodsname == "") {
+        warningAlert("商品名称不能为空");
+        return false;
+      }
+      if (this.form.price == "") {
+        warningAlert("价格不能为空");
+        return false;
+      }
+      if (this.form.market_price == "") {
+        warningAlert("市场价格不能为空");
+        return false;
+      }
+      if (this.form.img == ""||this.form.img==null) {
+        warningAlert("图片不能为空");
+        return false;
+      }
+     
+      if (this.form.specsid=="") {
+        warningAlert("商品规格不能为空");
+        return false;
+      }
+      if (this.form.specsattr=="") {
+        warningAlert("商品属性不能为空");
+        return false;
+      }
+       if (this.editor.txt.html()=="") {
+        warningAlert("商品描述不能为空");
+        return false;
+      }
 
-      // //验证每一个属性值都不能为空
-      // if (this.attrArr.some((item) => item.value == "")) {
-      //   warningAlert("所有的属性值都必填");
-      //   return false;
-      // }
-      // return true;
-    // },
+      return true;
+    },
     //点击了添加按钮
     add() {
-      console.log(1);
+      if(!this.checkedData()){
+        return
+      }
       // 将富文本编辑器的内容取出来赋值给this.form.description
       this.form.description=this.editor.txt.html();
       // let data=this.form;
@@ -344,9 +373,9 @@ export default {
     },
     //修改
     update() {
-      // if (!this.checkedData()) {
-      //   return;
-      // }
+       if(!this.checkedData()){
+        return
+      }
        this.form.description = this.editor.txt.html();
       let data = {
         ...this.form,
@@ -367,7 +396,7 @@ export default {
   mounted() {
     //如果商品一级分类没有请求过，就请求一次
     if (this.cateList.length == 0) {
-      this.reqCateList();
+      this.reqCateList()
     }
     // 由于使用了分页，但是商品管理模块需要所有的商品规格，不要分野，所以多传递一个参数，用来判断是否需要分页
     this.reqSpecsList(true);

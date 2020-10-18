@@ -17,10 +17,9 @@ let baseUrl = "/api";
 
 // 请求拦截，后台app.js后端登录拦截打开
 axios.interceptors.request.use(req=>{
-    console.log("---请求拦截----");
-    console.log(req);
+    // console.log("---请求拦截----");
+    // console.log(req);
     if(req.url!=baseUrl+"/api/userlogin"){
-        console.log(store.state);
         req.headers.authorization=store.state.userInfo.token;
     }
     return req;
@@ -210,6 +209,7 @@ export const reqCateAdd=(params)=>{
 }
 // 列表 params={istree:true}  
 export const reqCateList=(params)=>{
+    
     return axios({
         url:baseUrl+"/api/catelist",
         method:"get",
@@ -405,6 +405,77 @@ export const reqBannerUpdate = (form) => {
     }
     return axios({
         url: baseUrl + "/api/banneredit",
+        method: "post",
+        data: data
+    })
+}
+// ==========会员管理==============
+// 请求列表
+export const reqMemberList = () => {
+    return axios({
+        url: baseUrl + "/api/memberlist",
+    })
+}
+// 获取一条角色数据
+export const reqMemberInfo = (uid) => {
+    return axios({
+        url: baseUrl + "/api/memberinfo",
+        method: "get",
+        params: {
+            uid: uid
+        }
+    })
+}
+
+// 修改
+export const reqMemberUpdate = (data) => {
+    return axios({
+        url: baseUrl + "/api/memberedit",
+        method: "post",
+        data: data
+    })
+}
+// ==============秒杀=====================
+// 添加
+export const reqSeckAdd = (data) => {
+    return axios({
+        url: baseUrl + "/api/seckadd",
+        method: "post",
+        data: data
+    })
+}
+// 请求列表
+export const reqSeckList = () => {
+    return axios({
+        url: baseUrl + "/api/secklist",
+    })
+}
+// 获取一条角色数据
+export const reqSeckInfo = (id) => {
+    return axios({
+        url: baseUrl + "/api/seckinfo",
+        method: "get",
+        params: {
+            id: id
+        }
+    })
+}
+// 删除
+export const reqSeckDel = (id) => {
+    console.log(id);
+    return axios({
+        url: baseUrl + "/api/seckdelete",
+        method: "post",
+        data: {
+            id: id
+        }
+    })
+}
+
+// 修改
+export const reqSeckUpdate = (data) => {
+    return axios({
+        url: baseUrl + "/api/seckedit",
         method: "post",
         data: data
     })

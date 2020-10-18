@@ -1,8 +1,8 @@
 <template>
-  <el-dialog 
-  :title="info.isAdd ? '添加菜单' : '编辑菜单'" 
-  :visible.sync="info.isshow"
-  @closed="close"
+  <el-dialog
+    :title="info.isAdd ? '添加菜单' : '编辑菜单'"
+    :visible.sync="info.isshow"
+    @closed="close"
   >
     <el-form :model="form" ref="form" label-width="80px">
       <el-form-item label="菜单名称">
@@ -89,11 +89,11 @@ export default {
       indexRoutes: indexRoutes,
       form: {
         pid: 0,
-          title: "",
-          icon: "",
-          type: 1,
-          url: "",
-          status: 1,
+        title: "",
+        icon: "",
+        type: 1,
+        url: "",
+        status: 1,
       },
     };
   },
@@ -111,10 +111,10 @@ export default {
       this.info.isshow = false;
     },
     //弹框消失完成
-    close(){
+    close() {
       //如果是添加开的弹框，就什么都不做；如果是编辑开的弹框，就清除form
-      if(!this.info.isAdd){
-        this.empty()
+      if (!this.info.isAdd) {
+        this.empty();
       }
     },
     // 数据重置
@@ -128,8 +128,26 @@ export default {
         status: 1,
       };
     },
+    examine() {
+      if (this.form.title == "") {
+        warningAlert("菜单名称不能为空");
+        return false;
+      }
+      if (this.form.icon == "" && this.form.pid == 0) {
+        warningAlert("菜单图标不能为空");
+        return false;
+      }
+      if (this.form.url == "" && this.form.pid != 0) {
+        warningAlert("菜单地址不能为空");
+        return false;
+      }
+      return true;
+    },
     // 点击了添加按钮
     add() {
+      if(this.examine()==false){
+        return;
+      }
       reqMenuAdd(this.form).then((res) => {
         if ((res.data.code = 200)) {
           // 成功
@@ -169,6 +187,9 @@ export default {
     },
     // 修改
     update() {
+       if(this.examine()==false){
+        return;
+      }
       reqMenuUpdate(this.form).then((res) => {
         if (res.data.code == 200) {
           successAlert(res.data.msg);

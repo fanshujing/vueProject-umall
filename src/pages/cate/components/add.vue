@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="info.isAdd ? '添加菜单' : '编辑菜单'"
+    :title="info.isAdd ? '添加商品分类' : '编辑商品分类'"
     :visible.sync="info.isshow"
     @closed="close"
   >
@@ -158,8 +158,22 @@ export default {
       //将文件保存在form.img
       this.form.img = file;
     },
+    examine(){
+      if(this.form.catename==""){
+        warningAlert("分类名称不能为空")
+        return false
+      }
+      if((this.form.img==null||this.form.img=="")&&this.form.pid!=0){
+        warningAlert("图片不能为空")
+        return false
+      }
+      return true;
+    },
     // 点击了添加按钮
     add() {
+      if(this.examine()==false){
+        return
+      }
       reqCateAdd(this.form).then((res) => {
         if ((res.data.code = 200)) {
           // 成功
@@ -199,6 +213,9 @@ export default {
     },
     // 修改
     update() {
+      if(this.examine()==false){
+        return
+      }
       reqCateUpdate(this.form).then((res) => {
         if (res.data.code == 200) {
           successAlert(res.data.msg);
